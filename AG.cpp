@@ -16,7 +16,6 @@ AG::~AG() {}
 
 //MÉTODOS PROTECTED
 //=================
-
 void AG::iniciarPob(vector<pair<unsigned*, unsigned long> >& pob) {
     unsigned* p;
     unsigned long coste;
@@ -39,6 +38,31 @@ void AG::iniciarPob(vector<pair<unsigned*, unsigned long> >& pob) {
         
         pob.push_back(insert);
     }
+}
+
+vector<pair<unsigned*, unsigned long> > AG::seleccion(vector<pair<unsigned*,unsigned long> >& pob) {
+    vector<pair<unsigned*, unsigned long> > selec;
+    
+    unsigned i, j;
+    for(unsigned k = 0; k < pob.size(); k++) {        
+        do {
+            i = rand() % pob.size();
+        } while(!pob[i].first);
+        
+        do{
+            j = rand() % pob.size();
+        } while(!pob[j].first || i == j);
+        
+        if(pob[i].second < pob[j].second) {
+            selec.push_back(pob[i]);
+            pob[i].first = 0;
+        } else {
+            selec.push_back(pob[j]);
+            pob[j].first = 0;
+        }
+    }
+    
+    return selec;
 }
 
 unsigned* AG::cruce_pos(unsigned* p, unsigned* m) {
