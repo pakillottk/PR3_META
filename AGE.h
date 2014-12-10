@@ -8,11 +8,17 @@
 #ifndef AGE_H
 #define	AGE_H
 
+#include <utility>
 #include "AG.h"
 
-class AGG : public AG {
+using namespace std;
+
+class AGE : public AG {
+    protected:
+        float pm;
+        bool pmx;
     public:
-        AGE(const string& rutaFichero, float _pc = 0.7, float _pm = 0.01, unsigned _tam_pob = 50);
+        AGE(const string& rutaFichero, bool usarPmx = false, float _pm = 1, unsigned _tam_pob = 50);
         virtual ~AGE();
         virtual unsigned long ejecutar();
 };

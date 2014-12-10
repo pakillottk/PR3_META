@@ -20,18 +20,18 @@ using namespace std;
   */
 class AG : public Metaheuristica {
     protected:        
-        unsigned n_cruces;
-        unsigned n_mutac;
         unsigned tam_pob;
         
         unsigned evaluaciones;
+        unsigned max_eval;
+        
         unsigned long mejorCoste;
         
         unsigned t_subcadena;
         
         void iniciarPob(vector<pair<unsigned*, unsigned long> >& pob); //Genera la población inicial
         
-        vector<pair<unsigned*, unsigned long> > seleccion(vector<pair<unsigned*, unsigned long> >& pob);
+        vector<pair<unsigned*, unsigned> > seleccion(vector<pair<unsigned*, unsigned long> >& pob);
         //Proceso de selección
         
         void mutar(unsigned* p, unsigned i); //Muta el gen i del cromosoma p
@@ -43,7 +43,7 @@ class AG : public Metaheuristica {
         //Cruza p con m y devuelve el hijo
         
     public:
-        AG(const string& rutaFichero, float _pc = 0.7, float _pm = 0.01, unsigned _tam_pob = 50);
+        AG(const string& rutaFichero, unsigned _tam_pob = 50);
         virtual ~AG();
         virtual unsigned long ejecutar()=0;
 };
