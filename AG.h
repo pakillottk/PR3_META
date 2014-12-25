@@ -31,9 +31,6 @@ class AG : public Metaheuristica {
         
         void iniciarPob(vector<pair<unsigned*, unsigned long> >& pob); //Genera la población inicial
         
-        vector<pair<unsigned*, unsigned> > seleccion(vector<pair<unsigned*, unsigned long> >& pob);
-        //Proceso de selección
-        
         void mutar(unsigned* p, unsigned i); //Muta el gen i del cromosoma p
         
         unsigned* cruce_pos(unsigned* p, unsigned* m); 
