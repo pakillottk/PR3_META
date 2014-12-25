@@ -75,55 +75,75 @@ unsigned* AG::cruce_pos(unsigned* p, unsigned* m) {
 }
 
 pair<unsigned*, unsigned*> AG::cruce_pmx(unsigned* p, unsigned* m) {
-    unsigned* h1 = new unsigned[tam];
-    unsigned* h2 = new unsigned[tam];  
-    
-    unsigned* ind_h1 = new unsigned[tam];
-    unsigned* ind_h2 = new unsigned[tam];
+    unsigned* h1 = new unsigned[tam]; //HIJO 1
+    unsigned* h2 = new unsigned[tam]; //HIJO 2
     
     char* asignados_h1 = new char[tam];
+    unsigned* precedente_h1 = new unsigned[tam];
+    
     char* asignados_h2 = new char[tam];
+    unsigned* precedente_h2 = new unsigned[tam];
     
     for(unsigned i = 0; i < tam; i++) {
-        asignados_h1[i] = asignados_h2[i] = 0;       
+        asignados_h1[i] = asignados_h2[i] = 0;
     }
     
-    for(unsigned i = 0; i < tam; i++) {
-       asignados_h1[i] = asignados_h2[i] = 0;       
-        
-       h1[i] = m[i];
-       h2[i] = p[i];
-       
-       asignados_h1[h1[i]] = 1;
-       asignados_h2[h2[i]] = 1;
-       
-       ind_h1[h1[i]] = i;
-       ind_h2[h2[i]] = i;
-    }
-    
-    for(unsigned i = t_subcadena-1; i < (t_subcadena-1+t_subcadena); i++) {
-        if(asignados_h1[p[i]]) {
-            h1[ind_h1[p[i]]] = m[i];
-            asignados_h1[m[i]] = 1;           
-        }
-        
-        if(asignados_h2[m[i]]) {
-            h2[ind_h2[m[i]]] = p[i];
-            asignados_h2[p[i]] = 1;
-        }
-        
-        h1[i] = p[i];
-        h2[i] = m[i];       
+    /*
+        Subcadena central de m a h1 y de p a h2
+     */
+    for(unsigned i = t_subcadena-1; i < (2*t_subcadena) - 1; i++) {               
+        h1[i] = m[i];
         
         asignados_h1[h1[i]] = 1;
+        precedente_h1[h1[i]] = p[i];      
+        
+        h2[i] = p[i];    
         asignados_h2[h2[i]] = 1;
-    }    
+        precedente_h2[h2[i]] = m[i];
+    }
     
-    delete [] ind_h1;
-    delete [] ind_h2;
+    unsigned v;
+    
+    for(unsigned i = 0; i < t_subcadena-1; i++) {
+        if(asignados_h1[p[i]]) {
+            v = precedente_h1[p[i]];
+        } else {
+            v = p[i];
+        }
+        
+        h1[i] = v;
+        
+        if(asignados_h2[m[i]]) {
+            v = precedente_h2[m[i]];
+        } else {
+            v = m[i];
+        }
+        
+        h2[i] = v;
+    }
+    
+    for(unsigned i = (2*t_subcadena) - 1; i < tam; i++) {
+        if(asignados_h1[p[i]]) {
+            v = precedente_h1[p[i]];
+        } else {
+            v = p[i];
+        }
+        
+        h1[i] = v;
+        
+        if(asignados_h2[m[i]]) {
+            v = precedente_h2[m[i]];
+        } else {
+            v = m[i];
+        }
+        
+        h2[i] = v;
+    }
     
     delete [] asignados_h1;
     delete [] asignados_h2;
+    delete [] precedente_h1;
+    delete [] precedente_h2;
     
     return pair<unsigned*, unsigned*>(h1, h2);
 }
