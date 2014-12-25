@@ -42,25 +42,28 @@ void AG::iniciarPob(vector<pair<unsigned*, unsigned long> >& pob) {
 unsigned* AG::cruce_pos(unsigned* p, unsigned* m) {
     unsigned* h = new unsigned[tam];    
     char* libres = new char[tam];
-    char* asignados = new char[tam];
+    char* asignados = new char[tam];   
     
     for(unsigned i = 0; i < tam; i++) {
         libres[i] = 1;
         asignados[i] = 0;
-        
-        if(p[i] == m[i]) {
-            h[i] = p[i];
-            libres[h[i]] = 0;
-            asignados[i] = 1;
-        }
     }
     
-    for(unsigned i = 0; i < tam; i++) {
-        if(libres[i]) {
+    for(unsigned i = 0; i < tam; i++) {       
+        if(p[i] == m[i]) {           
+            h[i] = p[i];
+            libres[i] = 0;
+            asignados[h[i]] = 1;
+        }
+    }   
+    
+    
+    for(unsigned i = 0; i < tam; i++) {        
+        if(libres[i]) {            
             do {
-                h[i] = rand() % tam;
-            } while(asignados[h[i]]);
-            
+                h[i] = rand() % tam;                
+            } while(asignados[h[i]]);        
+           
             asignados[h[i]] = 1;
         }
     }    
