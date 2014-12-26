@@ -110,11 +110,25 @@ void Principal::construirAlgoritmo() {
         delete metaheuristica;
     
     //Instanciación de la metaheurística
-    /*
+    
     switch(tipo) {
-       
+        case AGG_POS:
+            metaheuristica = new AGG("./DAT/" + fichero + ".dat");
+        break;
+        
+        case AGG_PMX:
+            metaheuristica = new AGG("./DAT/" + fichero + ".dat", true);
+        break;
+        
+        case AGE_POS:
+            metaheuristica = new AGE("./DAT/" + fichero + ".dat");
+        break;
+        
+        case AGE_PMX:
+            metaheuristica = new AGE("./DAT/" + fichero + ".dat", true);
+        break;
     }  
-    */    
+       
 }
 
 

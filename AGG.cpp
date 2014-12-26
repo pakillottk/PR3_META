@@ -13,27 +13,22 @@ AGG::~AGG(){}
 
 vector<unsigned*> AGG::seleccion(vector<pair<unsigned*,unsigned long> >& pob) {
     vector<unsigned*> selec;
-    char* seleccionado = new char[pob.size()];
-    for(unsigned i = 0; i < pob.size(); i++) {
-        seleccionado[i] = 0;
-    }
     
-    unsigned p1, p2;
+    unsigned p;
+    unsigned m;
+    
     for(unsigned i = 0; i < pob.size(); i++) {
+        p = rand() % pob.size();
         do {
-            p1 = rand() % pob.size();
-        } while(seleccionado[p1]);
+            m = rand() % pob.size();
+        } while(p == m);
         
-        do {
-            p2 = rand() % pob.size();
-        } while(seleccionado[p2] || p1 == p2);
+      
         
-        if(pob[p1].second < pob[p2].second) {
-            selec.push_back(pob[p1].first);
-            seleccionado[p1] = 1;
+        if(pob[p].second < pob[m].second) {
+            selec.push_back(pob[p].first);
         } else {
-            selec.push_back(pob[p2].first);
-            seleccionado[p2] = 1;
+            selec.push_back(pob[m].first);
         }
     }
     
@@ -56,40 +51,52 @@ unsigned long AGG::ejecutar() {
         //Generar padres
         padres = seleccion(pob);
         
-        //Generar hijos
-        unsigned h_act = 0;
+        //Generar hijos        
         pair<unsigned*, unsigned*> h;       
+        pair<unsigned*, unsigned long> insert;
+        insert.second = 0;
         
-        for(unsigned i = 0; i < n_cruces; i=i+2) {
+        for(unsigned i = 0; i < n_cruces; i=i+2) {            
             if(pmx)
                 h = cruce_pmx(padres[i], padres[i+1]);
             else
-                h.first = cruce_pos(padres[i], padres[i+1]); 
+                h.first = cruce_pos(padres[i], padres[i+1]);           
+          
             
-            hijos[h_act++].first = h.first;     
-            if(pmx)
-                hijos[h_act++].first = h.second;
-        }
+            
+            insert.first = h.first;
+            hijos.push_back(insert);
+            
+            if(pmx) {
+                 insert.first = h.second;   
+                 hijos.push_back(insert);
+            }
+        }        
         
         //Mutar hijos
-        unsigned j, gen;
-        unsigned peorHijo;
-        unsigned long peorCoste_h = 0;
+        unsigned j, gen;       
         for(unsigned i = 0; i < n_mutac; i++) {
             j = rand() % hijos.size();
             gen = rand() % tam;        
             
-            mutar(hijos[j].first, gen);
-            hijos[j].second = calculaCoste(hijos[j].first);
-            if(hijos[j].second > peorCoste_h) {
-                peorHijo = j;
-                peorCoste_h = hijos[i].second;
-            }
+            mutar(hijos[j].first, gen);           
+        }        
+        
+        //Evaluar hijos
+        unsigned peorHijo;
+        unsigned long peorCoste = 0;
+        for(unsigned i = 0; i < hijos.size(); i++) {
+            hijos[i].second = calculaCoste(hijos[i].first);
             
-            evaluaciones++;            
+            if(hijos[i].second > peorCoste) {
+                peorHijo = i;
+                peorCoste = hijos[i].second;
+            }
+
+            evaluaciones++;
             if(evaluaciones == max_eval)
                 break;
-        }
+        }     
         
         //Comprobamos si hemos cumplido condicion de parada
         if(evaluaciones == max_eval)
@@ -97,15 +104,15 @@ unsigned long AGG::ejecutar() {
         
         //Reemplazo
         unsigned* mejorHijo;
-        unsigned  mejorCoste_h = 9999999;
+        unsigned  mejorCoste_h = 999999999;
         unsigned cur_p = 0;
         
         if(pmx) {
             delete [] hijos[peorHijo].first;
-            hijos[peorHijo] = 0;
+            hijos[peorHijo].first = 0;
         } else {
             for(unsigned i = 0; i < hijos.size(); i++) {
-                if(!hijos[i])
+                if(!hijos[i].first)
                     continue;
                 
                 if(pob[cur_p].first == solucion) {
@@ -113,25 +120,26 @@ unsigned long AGG::ejecutar() {
                 } 
 
                 delete [] pob[cur_p].first;
-                pob[cur_p].first = hijos[i];
+                pob[cur_p].first = hijos[i].first;
                 pob[cur_p].second = hijos[i].second; 
                 cur_p++;
                 
                 if(hijos[i].second < mejorCoste_h) {
-                    mejorHijo = hijos[i];
+                    mejorHijo = hijos[i].first;
                     mejorCoste_h = hijos[i].second;
                 }
             }
-        }
+        }       
+        
         //Actualizar mejor solución
         if(mejorCoste_h < mejorCoste) {
             solucion = mejorHijo;
             mejorCoste = mejorCoste_h;
-        }
+        }       
         
         //Reiniciar vectores
         padres.clear();
-        hijos.clear();
+        hijos.clear();        
     }    
     
     //Liberamos la memora

@@ -3,15 +3,15 @@
 
 //CONSTRUCTORES Y DESTRUCTORES
 //===========================
-AG::AG(const string& rutaFichero, float _pc, float _pm, unsigned _tam_pob): Metaheuristica(rutaFichero) {
+AG::AG(const string& rutaFichero, unsigned _tam_pob): Metaheuristica(rutaFichero) {
     tam_pob = _tam_pob;      
     evaluaciones = 0;
-    mejorCoste = 99999999;
+    mejorCoste = 999999999;
     t_subcadena = tam/2;   
     max_eval = 20000;
 }
 
-AG::~AG() {}
+AG::~AG() { solucion = 0; }
 
 //MÉTODOS PROTECTED
 //=================

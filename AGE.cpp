@@ -20,7 +20,8 @@ unsigned long AGE::ejecutar() {
     while(evaluaciones < max_eval) {
         //Seleccionamos dos padres
         unsigned ind_1, ind_2;
-        unsigned* p1, p2;
+        unsigned* p1;
+        unsigned* p2;
         
         ind_1 = rand() % pob.size();
         
@@ -67,7 +68,7 @@ unsigned long AGE::ejecutar() {
         
         for(unsigned i = 0; i < tam_pob; i++) {
             if(pob[i].second > peorCoste) {
-                peorCoste = pob[i].second
+                peorCoste = pob[i].second;
                 peor = i;
             }
         }
@@ -85,7 +86,7 @@ unsigned long AGE::ejecutar() {
             peorCoste = 0;
             for(unsigned i = 0; i < tam_pob; i++) {
                 if(pob[i].second > peorCoste) {
-                    peorCoste = pob[i].second
+                    peorCoste = pob[i].second;
                     peor = i;
                 }
             }

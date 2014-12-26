@@ -15,6 +15,9 @@
 #include "Utils.h"
 #include "Timer.h"
 #include "Metaheuristica.h"
+#include "AG.h"
+#include "AGE.h"
+#include "AGG.h"
 
 using namespace std;
 
