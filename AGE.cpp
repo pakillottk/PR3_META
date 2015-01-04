@@ -11,18 +11,21 @@ AG(rutaFichero, _tam_pob)
 AGE::~AGE() {}
 
 unsigned long AGE::ejecutar() {
-    //Vector población
+    //Vector poblaciÃ³n
     vector<pair<unsigned*, unsigned long> > pob;
     
-    //Población inicial
+    //PoblaciÃ³n inicial
     iniciarPob(pob);
     
+    unsigned ind_1, ind_2;
+    unsigned* p1;
+    unsigned* p2;
+    
+    pair<unsigned*, unsigned*> h;
+    pair<unsigned long, unsigned long> coste_h;
+    
     while(evaluaciones < max_eval) {
-        //Seleccionamos dos padres
-        unsigned ind_1, ind_2;
-        unsigned* p1;
-        unsigned* p2;
-        
+        //Seleccionamos dos padres       
         ind_1 = rand() % pob.size();
         
         do {
@@ -32,8 +35,7 @@ unsigned long AGE::ejecutar() {
         p1 = pob[ind_1].first;
         p2 = pob[ind_2].first;
         
-        //Cruzamos
-        pair<unsigned*, unsigned*> h;
+        //Cruzamos        
         if(pmx) {
             h = cruce_pmx(p1, p2);
         } else {
@@ -48,9 +50,7 @@ unsigned long AGE::ejecutar() {
             mutar(h.first, g);
         }
         
-        //Calculamos coste hijos
-        pair<unsigned long, unsigned long> coste_h;
-        
+        //Calculamos coste hijos        
         coste_h.first = calculaCoste(h.first);
         evaluaciones++;
         

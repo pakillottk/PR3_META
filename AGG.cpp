@@ -140,10 +140,10 @@ unsigned long AGG::ejecutar() {
         //Reiniciar vectores
         padres.clear();
         hijos.clear();        
-    }    
+    } 
     
     //Liberamos la memora
-    for(unsigned i = 0; i < tam_pob; i++)
+    for(unsigned i = 0; i < pob.size(); i++)
         delete [] pob[i].first;
     
     //Devolvemos mejor coste encontrado
