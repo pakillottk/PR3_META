@@ -143,6 +143,11 @@ unsigned long AGG::ejecutar() {
         hijos.clear();        
     } 
     
+    cout << "SOLUCION" << endl;
+    for(unsigned i = 0; i < tam; i++) {
+        cout << solucion[i] << " ";
+    }
+    
     //Liberamos la memora
     for(unsigned i = 0; i < pob.size(); i++)
         delete [] pob[i].first;
